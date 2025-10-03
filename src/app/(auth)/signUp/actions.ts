@@ -1,6 +1,6 @@
-import { cookies } from 'next/headers';
 "use server";
 
+import { cookies } from 'next/headers';
 import { lucia } from "@/auth";
 import prisma from "@/lib/prisma";
 import { signUpValues, signUpSchema } from "@/lib/validation";
@@ -8,6 +8,7 @@ import { hash } from "@node-rs/argon2";
 import { generateIdFromEntropySize } from "lucia";
 import { redirect } from "next/navigation";
 import { isRedirectError } from 'next/dist/client/components/redirect';
+
 
 export async function signUp(
   credentials: signUpValues,
