@@ -1,6 +1,6 @@
 "use client";
 
-import { signUpSchema, signUpValues } from "@/lib/validation";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -12,29 +12,27 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useState, useTransition } from "react";
-import { signUp } from "./actions";
 import { PasswordInput } from "@/components/PasswordInput";
 import LoadingButton from "@/components/LoadingButton";
+import { login } from "./actions";
+import { loginSchema, loginValues } from "@/lib/validation";
 
-export default function SignUpForm() {
+export default function LoginForm() {
   const [error, setError] = useState<string>();
-
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<signUpValues>({
-    resolver: zodResolver(signUpSchema),
+  const form = useForm<loginValues>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
       username: "",
       password: "",
     },
   });
 
-  async function onSubmit(values: signUpValues) {
+  async function onSubmit(values: loginValues) {
     setError(undefined);
     startTransition(async () => {
-      const { error } = await signUp(values);
+      const { error } = await login(values);
       if (error) setError(error);
     });
   }
@@ -56,19 +54,6 @@ export default function SignUpForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="email" type="email" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
 
         <FormField
           control={form.control}
@@ -83,8 +68,9 @@ export default function SignUpForm() {
             </FormItem>
           )}
         />
+
         <LoadingButton type="submit" className="w-full" loading={isPending}>
-          Create account
+          Log in
         </LoadingButton>
       </form>
     </Form>
