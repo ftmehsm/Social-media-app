@@ -45,7 +45,7 @@
     --popover: 0 0% 9%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 142.1 70.6% 45.3%;
+    --primary: 236 100% 34%;
     --primary-foreground: 144.9 80.4% 10%;
 
     --secondary: 240 3.7% 15.9%;
@@ -62,7 +62,7 @@
 
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 142.4 71.8% 29.2%;
+    --ring: 236 72% 46%;
   }
 }
 

@@ -1,7 +1,6 @@
 "use client";
 
-import { LogOutIcon, UserIcon } from "lucide-react";
-import { Button } from "./ui/button";
+import { LogOutIcon, SunIcon, MoonIcon, UserIcon } from "lucide-react";
 import { useSession } from "@/app/(main)/SessionProvider";
 import {
   DropdownMenu,
@@ -15,6 +14,7 @@ import UserAvatar from "./UserAvatar";
 import Link from "next/link";
 import { logout } from "@/app/(auth)/actions";
 import { cn } from "@/lib/utils";
+import { useTheme } from "next-themes";
 
 interface UserButtonProps {
   className?: string;
@@ -22,10 +22,17 @@ interface UserButtonProps {
 
 export default function UserButton({ className }: UserButtonProps) {
   const { user } = useSession();
+  const { theme, setTheme } = useTheme();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className={cn("flex-none rounded-full outline-none border-none", className)}>
+        <button
+          className={cn(
+            "flex-none rounded-full border-none outline-none",
+            className,
+          )}
+        >
           <UserAvatar avatarUrl={user.avatarUrl} size={40} />
         </button>
       </DropdownMenuTrigger>
@@ -38,6 +45,17 @@ export default function UserButton({ className }: UserButtonProps) {
             Profile
           </DropdownMenuItem>
         </Link>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        >
+          {theme === "dark" ? (
+            <SunIcon className="mr-2 size-4" />
+          ) : (
+            <MoonIcon className="mr-2 size-4" />
+          )}
+          {theme === "dark" ? "Light Mode" : "Dark Mode"}
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => logout()}>
           <LogOutIcon className="mr-2 size-4" />
