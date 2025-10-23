@@ -1,0 +1,11 @@
+.tiptap p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    color: theme('colors.muted.foreground');
+    pointer-events: none;
+    height: 0;
+}
+
+.tiptap.ProseMirror {
+   outline: none;
+}
