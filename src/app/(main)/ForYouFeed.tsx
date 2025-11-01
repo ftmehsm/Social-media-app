@@ -2,10 +2,9 @@
 
 import Post from "@/components/posts/Post";
 import kyInstance from "@/lib/ky";
-import { PostData, PostpPage } from "@/lib/types";
+import { PostData, PostsPage } from "@/lib/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
 import PostsLoadingSkeleton from "@/components/posts/PostsLoadingSkeleton";
 
@@ -25,7 +24,7 @@ export default function ForYouFeed() {
           "/api/posts/for-you",
           pageParam ? { searchParams: { cursor: pageParam } } : {},
         )
-        .json<PostpPage>(),
+        .json<PostsPage>(),
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
@@ -37,7 +36,11 @@ export default function ForYouFeed() {
   }
 
   if (status === "success" && posts.length === 0 && !hasNextPage) {
-    return <p className="text-center text-muted-foreground">No one has posted anything yet. Be the first to post!</p>;
+    return (
+      <p className="text-center text-muted-foreground">
+        No one has posted anything yet. Be the first to post!
+      </p>
+    );
   }
 
   if (status === "error") {
