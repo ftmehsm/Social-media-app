@@ -12,6 +12,12 @@ export async function GET(
     if (!loggedInUser)
       return Response.json({ error: "Unauthorized" }, { status: 401 });
 
+    if (loggedInUser.id === userId)
+      return Response.json(
+        { error: "Cannot follow yourself" },
+        { status: 400 },
+      );
+
     const user = await prisma.user.findUnique({
       where: {
         id: userId,
@@ -23,8 +29,8 @@ export async function GET(
       return Response.json({ error: "User not found" }, { status: 404 });
 
     const data: FollowerInfo = {
-      followers: user._count.followers,
-      isFollowedByUser: !!user.followers.length,
+      followers: user._count.following,
+      isFollowedByUser: !!user.following.length,
     };
 
     return Response.json(data);
@@ -43,6 +49,12 @@ export async function POST(
 
     if (!loggedInUser)
       return Response.json({ error: "Unauthorized" }, { status: 401 });
+
+    if (loggedInUser.id === userId)
+      return Response.json(
+        { error: "Cannot follow yourself" },
+        { status: 400 },
+      );
 
     await prisma.follow.upsert({
       where: {
@@ -74,6 +86,12 @@ export async function DELETE(
 
     if (!loggedInUser)
       return Response.json({ error: "Unauthorized" }, { status: 401 });
+
+    if (loggedInUser.id === userId)
+      return Response.json(
+        { error: "Cannot unfollow yourself" },
+        { status: 400 },
+      );
 
     await prisma.follow.deleteMany({
       where: {

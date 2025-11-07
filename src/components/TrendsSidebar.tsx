@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { Suspense } from "react";
 import UserAvatar from "./UserAvatar";
-import { Button } from "./ui/button";
 import { unstable_cache } from "next/cache";
 import { formatNumber } from "@/lib/utils";
 import FollowButton from "./FollowButton";
@@ -31,11 +30,11 @@ async function WhoToFollow() {
       NOT: {
         id: user.id,
       },
-      followers:{
-        none:{
+      following: {
+        none: {
           followerId: user.id,
-        }
-      }
+        },
+      },
     },
     select: getUserDataSelect(user.id),
     take: 5,
@@ -63,8 +62,8 @@ async function WhoToFollow() {
           <FollowButton
             userId={user.id}
             initialState={{
-              followers: user._count.followers,
-              isFollowedByUser: user.followers.some(({followerId}) => followerId === user.id),
+              followers: user._count.following,
+              isFollowedByUser: user.following.length > 0,
             }}
           />
         </div>

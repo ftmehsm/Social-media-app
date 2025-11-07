@@ -49,6 +49,10 @@ export default function FollowButton({
         variant: "destructive",
       });
     },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey: ["post-feed", "following"] });
+    },
   });
 
   return (
