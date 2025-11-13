@@ -11,10 +11,9 @@ import { formatNumber, formatRelativeDate } from "@/lib/utils";
 import { formatDate } from "date-fns";
 import FollowerCount from "@/components/FollowerCount";
 import FollowButton from "@/components/FollowButton";
-import { PencilIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import UserPosts from "./UserPosts";
 import Linkify from "@/components/Linkify";
+import EditProfileButton from "./EditProfileButton";
 
 interface PageProps {
   params: Promise<{
@@ -123,10 +122,7 @@ async function UserProfile({ user, loggedInUserId }: UserProfileProps) {
         </div>
         {user.id === loggedInUserId ? (
           <div>
-            <Button variant="default" className="gap-2">
-              <PencilIcon className="size-4" />
-              Edit Profile
-            </Button>
+            <EditProfileButton user={user} />
           </div>
         ) : (
           <FollowButton userId={user.id} initialState={followerInfo} />

@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import kyInstance from "@/lib/ky";
 import { FollowerInfo } from "@/lib/types";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useFollowerInfo(userId: string, initialState: FollowerInfo) {
   const queryClient = useQueryClient();
-  const queryKey = ["followerInfo", userId];
+  const queryKey = useMemo(() => ["followerInfo", userId], [userId]);
   const hasInitializedRef = useRef(false);
   const lastUserIdRef = useRef(userId);
   const initialStateRef = useRef(initialState);
