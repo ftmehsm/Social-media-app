@@ -19,7 +19,7 @@ export default function Login() {
           <div className="space-y-5">
             <LoginForm />
             <Link href="/signUp" className="block text-center hover:underline">
-              Don't have an account? sign up
+              Don&apos;t have an account? sign up
             </Link>
           </div>
         </div>

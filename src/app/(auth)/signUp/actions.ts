@@ -7,7 +7,6 @@ import { signUpValues, signUpSchema } from "@/lib/validation";
 import { hash } from "@node-rs/argon2";
 import { generateIdFromEntropySize } from "lucia";
 import { redirect } from "next/navigation";
-import { isRedirectError } from "next/dist/client/components/redirect";
 
 export async function signUp(
   credentials: signUpValues,
@@ -71,7 +70,7 @@ export async function signUp(
     const session = await lucia.createSession(userId, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
 
-    cookies().set(
+    (await cookies()).set(
       sessionCookie.name,
       sessionCookie.value,
       sessionCookie.attributes,
@@ -79,7 +78,15 @@ export async function signUp(
 
     return redirect("/");
   } catch (error) {
-    if (isRedirectError(error)) throw error;
+    // Re-throw redirect errors
+    if (
+      error &&
+      typeof error === "object" &&
+      "digest" in error &&
+      error.digest === "NEXT_REDIRECT"
+    ) {
+      throw error;
+    }
     console.error(error);
     return {
       error: "Something went wrong!",

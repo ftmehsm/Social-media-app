@@ -3,7 +3,6 @@
 import { lucia } from "@/auth";
 import prisma from "@/lib/prisma";
 import { loginSchema, loginValues } from "@/lib/validation";
-import { isRedirectError } from "next/dist/client/components/redirect";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { verify } from "@node-rs/argon2";
@@ -45,7 +44,7 @@ export async function login(
     const session = await lucia.createSession(existingUser.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
 
-    cookies().set(
+    (await cookies()).set(
       sessionCookie.name,
       sessionCookie.value,
       sessionCookie.attributes,
@@ -53,7 +52,15 @@ export async function login(
 
     return redirect("/");
   } catch (error) {
-    if (isRedirectError(error)) throw error;
+    // Re-throw redirect errors
+    if (
+      error &&
+      typeof error === "object" &&
+      "digest" in error &&
+      error.digest === "NEXT_REDIRECT"
+    ) {
+      throw error;
+    }
     console.log(error);
     return {
       error: "Something went wrong! please try again",
