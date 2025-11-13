@@ -30,7 +30,7 @@ export async function GET(
       return Response.json({ error: "User not found" }, { status: 404 });
 
     const data: FollowerInfo = {
-      followers: user._count.following,
+      followers: user._count.followers,
       isFollowedByUser: !!user.following.length,
     };
 

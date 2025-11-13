@@ -14,6 +14,7 @@ import FollowButton from "@/components/FollowButton";
 import { PencilIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import UserPosts from "./UserPosts";
+import Linkify from "@/components/Linkify";
 
 interface PageProps {
   params: Promise<{
@@ -89,8 +90,8 @@ interface UserProfileProps {
 async function UserProfile({ user, loggedInUserId }: UserProfileProps) {
   const followerInfo: FollowerInfo = {
     followers: user._count.followers,
-    isFollowedByUser: user.followers.some(
-      (follower) => follower.followerId === loggedInUserId,
+    isFollowedByUser: user.following.some(
+      (follow) => follow.followerId === loggedInUserId,
     ),
   };
 
@@ -134,9 +135,11 @@ async function UserProfile({ user, loggedInUserId }: UserProfileProps) {
       {user.bio && (
         <>
           <hr />
-          <div className="overflow-hidden whitespace-pre-line break-words">
-            {user.bio}
-          </div>
+          <Linkify>
+            <div className="overflow-hidden whitespace-pre-line break-words">
+              {user.bio}
+            </div>
+          </Linkify>
         </>
       )}
     </div>
