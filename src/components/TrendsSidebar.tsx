@@ -65,8 +65,8 @@ async function WhoToFollow() {
           <FollowButton
             userId={user.id}
             initialState={{
-              followers: user._count.following,
-              isFollowedByUser: user.following.length > 0,
+              followers: user._count.followers,
+              isFollowedByUser: user.followers.length > 0,
             }}
           />
         </div>

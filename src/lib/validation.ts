@@ -1,28 +1,29 @@
 import { z } from "zod";
 
 const requiredString = z.string().trim().min(1, "Required");
+
 export const signUpSchema = z.object({
   email: requiredString.email("Invalid email address"),
   username: requiredString.regex(
-    /^[a-z0-9_-]{3,15}$/,
-    "Only lowercase letters, numbers, underscores and dashes are allowed",
+    /^[a-zA-Z0-9_-]+$/,
+    "Only letters, numbers, - and _ allowed",
   ),
-  password: requiredString.min(8, "must at least 8 chracters"),
+  password: requiredString.min(8, "Must be at least 8 characters"),
 });
 
-export type signUpValues = z.infer<typeof signUpSchema>;
+export type SignUpValues = z.infer<typeof signUpSchema>;
 
 export const loginSchema = z.object({
   username: requiredString,
   password: requiredString,
 });
 
-export type loginValues = z.infer<typeof loginSchema>;
-
+export type LoginValues = z.infer<typeof loginSchema>;
 
 export const createPostSchema = z.object({
   content: requiredString,
-})
+  mediaIds: z.array(z.string()).max(5, "Cannot have more than 5 attachments"),
+});
 
 export const updateUserProfileSchema = z.object({
   displayName: requiredString,

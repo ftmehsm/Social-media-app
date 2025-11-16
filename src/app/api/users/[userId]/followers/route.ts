@@ -31,7 +31,7 @@ export async function GET(
 
     const data: FollowerInfo = {
       followers: user._count.followers,
-      isFollowedByUser: !!user.following.length,
+      isFollowedByUser: user.followers.length > 0,
     };
 
     return Response.json(data);

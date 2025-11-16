@@ -24,7 +24,7 @@ export default function UserTooltip({ children, user }: UserTooltipProps) {
 
   const followerState: FollowerInfo = {
     followers: user._count.followers,
-    isFollowedByUser: !!user.following.some(
+    isFollowedByUser: !!user.followers.some(
       ({ followerId }) => followerId === loggedInUser.id,
     ),
   };
