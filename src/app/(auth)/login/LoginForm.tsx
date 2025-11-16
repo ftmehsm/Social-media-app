@@ -15,13 +15,13 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/PasswordInput";
 import LoadingButton from "@/components/LoadingButton";
 import { login } from "./actions";
-import { loginSchema, loginValues } from "@/lib/validation";
+import { loginSchema, LoginValues } from "@/lib/validation";
 
 export default function LoginForm() {
   const [error, setError] = useState<string>();
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<loginValues>({
+  const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       username: "",
@@ -29,7 +29,7 @@ export default function LoginForm() {
     },
   });
 
-  async function onSubmit(values: loginValues) {
+  async function onSubmit(values: LoginValues) {
     setError(undefined);
     startTransition(async () => {
       const { error } = await login(values);

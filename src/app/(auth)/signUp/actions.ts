@@ -3,13 +3,13 @@
 import { cookies } from "next/headers";
 import { lucia } from "@/auth";
 import prisma from "@/lib/prisma";
-import { signUpValues, signUpSchema } from "@/lib/validation";
+import { SignUpValues, signUpSchema } from "@/lib/validation";
 import { hash } from "@node-rs/argon2";
 import { generateIdFromEntropySize } from "lucia";
 import { redirect } from "next/navigation";
 
 export async function signUp(
-  credentials: signUpValues,
+  credentials: SignUpValues,
 ): Promise<{ error: string }> {
   try {
     const { username, email, password } = signUpSchema.parse(credentials);
