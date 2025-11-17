@@ -12,7 +12,7 @@ import { useState } from "react";
 import Linkify from "../Linkify";
 import UserAvatar from "../UserAvatar";
 import UserTooltip from "../UserTooltip";
-// import BookmarkButton from "./BookmarkButton";
+import BookmarkButton from "./BookmarkButton";
 import LikeButton from "./LikeButton";
 import PostMoreButton from "./PostMoreButton";
 
@@ -80,14 +80,14 @@ export default function Post({ post }: PostProps) {
             onClick={() => setShowComments(!showComments)}
           />
         </div>
-        {/* <BookmarkButton
+        <BookmarkButton
           postId={post.id}
           initialState={{
             isBookmarkedByUser: post.bookmarks.some(
               (bookmark) => bookmark.userId === user.id,
             ),
           }}
-        /> */}
+        />
       </div>
       {/* {showComments && <Comments post={post} />} */}
     </article>
