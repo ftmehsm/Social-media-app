@@ -1,111 +1,124 @@
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
-import { FollowerInfo, getUserDataSelect } from "@/lib/types";
+import { FollowerInfo } from "@/lib/types";
 
 export async function GET(
   req: Request,
-  { params }: { params: Promise<{ userId: string }> },
+  { params: { userId } }: { params: { userId: string } },
 ) {
   try {
-    const { userId } = await params;
     const { user: loggedInUser } = await validateRequest();
 
-    if (!loggedInUser)
+    if (!loggedInUser) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
-
-    if (loggedInUser.id === userId)
-      return Response.json(
-        { error: "Cannot follow yourself" },
-        { status: 400 },
-      );
+    }
 
     const user = await prisma.user.findUnique({
-      where: {
-        id: userId,
+      where: { id: userId },
+      select: {
+        followers: {
+          where: {
+            followerId: loggedInUser.id,
+          },
+          select: {
+            followerId: true,
+          },
+        },
+        _count: {
+          select: {
+            followers: true,
+          },
+        },
       },
-      select: getUserDataSelect(loggedInUser.id),
     });
 
-    if (!user)
+    if (!user) {
       return Response.json({ error: "User not found" }, { status: 404 });
+    }
 
     const data: FollowerInfo = {
       followers: user._count.followers,
-      isFollowedByUser: user.followers.length > 0,
+      isFollowedByUser: !!user.followers.length,
     };
 
     return Response.json(data);
   } catch (error) {
     console.error(error);
-    return Response.json({ error: "Internal Server Error" }, { status: 500 });
+    return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }
 
 export async function POST(
   req: Request,
-  { params }: { params: Promise<{ userId: string }> },
+  { params: { userId } }: { params: { userId: string } },
 ) {
   try {
-    const { userId } = await params;
     const { user: loggedInUser } = await validateRequest();
 
-    if (!loggedInUser)
+    if (!loggedInUser) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    if (loggedInUser.id === userId)
-      return Response.json(
-        { error: "Cannot follow yourself" },
-        { status: 400 },
-      );
-
-    await prisma.follow.upsert({
-      where: {
-        followerId_followingId: {
+    await prisma.$transaction([
+      prisma.follow.upsert({
+        where: {
+          followerId_followingId: {
+            followerId: loggedInUser.id,
+            followingId: userId,
+          },
+        },
+        create: {
           followerId: loggedInUser.id,
           followingId: userId,
         },
-      },
-      create: {
-        followerId: loggedInUser.id,
-        followingId: userId,
-      },
-      update: {},
-    });
+        update: {},
+      }),
+      prisma.notification.create({
+        data: {
+          issuerId: loggedInUser.id,
+          recipientId: userId,
+          type: "FOLLOW",
+        },
+      }),
+    ]);
 
     return new Response();
   } catch (error) {
     console.error(error);
-    return Response.json({ error: "Internal Server Error" }, { status: 500 });
+    return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }
 
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ userId: string }> },
+  { params: { userId } }: { params: { userId: string } },
 ) {
   try {
-    const { userId } = await params;
     const { user: loggedInUser } = await validateRequest();
 
-    if (!loggedInUser)
+    if (!loggedInUser) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    if (loggedInUser.id === userId)
-      return Response.json(
-        { error: "Cannot unfollow yourself" },
-        { status: 400 },
-      );
-
-    await prisma.follow.deleteMany({
-      where: {
-        followerId: loggedInUser.id,
-        followingId: userId,
-      },
-    });
+    await prisma.$transaction([
+      prisma.follow.deleteMany({
+        where: {
+          followerId: loggedInUser.id,
+          followingId: userId,
+        },
+      }),
+      prisma.notification.deleteMany({
+        where: {
+          issuerId: loggedInUser.id,
+          recipientId: userId,
+          type: "FOLLOW",
+        },
+      }),
+    ]);
 
     return new Response();
   } catch (error) {
     console.error(error);
-    return Response.json({ error: "Internal Server Error" }, { status: 500 });
+    return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }
