@@ -41,9 +41,10 @@ export async function GET(
     // Use raw query to find post IDs that contain the hashtag (case-insensitive)
     // Match the pattern used in TrendsSidebar: #[a-zA-Z0-9_-]+
     // We want to match #hashtag where hashtag is exactly our tag (case-insensitive)
-    // Use negative lookahead to ensure it's not followed by valid hashtag characters
+    // Ensure it's not part of a longer hashtag by checking it's followed by non-hashtag chars or end
     // The ~* operator in PostgreSQL makes it case-insensitive
-    const hashtagRegex = `#${escapedHashtag}(?![a-zA-Z0-9_-])`;
+    // Pattern: Match #hashtag followed by non-hashtag character (space, punctuation, etc.) or end of string
+    const hashtagRegex = `#${escapedHashtag}([^a-zA-Z0-9_-]|$)`;
 
     // First, get post IDs using raw SQL for accurate regex matching
     // Use parameterized query for safety
