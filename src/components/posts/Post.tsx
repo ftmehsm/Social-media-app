@@ -8,7 +8,7 @@ import { MessageSquare } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-// import Comments from "../comments/Comments";
+import Comments from "../comments/Comments";
 import Linkify from "../Linkify";
 import UserAvatar from "../UserAvatar";
 import UserTooltip from "../UserTooltip";
@@ -89,7 +89,7 @@ export default function Post({ post }: PostProps) {
           }}
         />
       </div>
-      {/* {showComments && <Comments post={post} />} */}
+      {showComments && <Comments post={post} />}
     </article>
   );
 }
