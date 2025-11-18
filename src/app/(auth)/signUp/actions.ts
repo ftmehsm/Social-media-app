@@ -1,11 +1,12 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { lucia } from "@/auth";
 import prisma from "@/lib/prisma";
-import { SignUpValues, signUpSchema } from "@/lib/validation";
+import streamServerClient from "@/lib/stream";
+import { signUpSchema, SignUpValues } from "@/lib/validation";
 import { hash } from "@node-rs/argon2";
 import { generateIdFromEntropySize } from "lucia";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export async function signUp(
@@ -14,7 +15,6 @@ export async function signUp(
   try {
     const { username, email, password } = signUpSchema.parse(credentials);
 
-    //Hash the password
     const passwordHash = await hash(password, {
       memoryCost: 19456,
       timeCost: 2,
@@ -22,10 +22,8 @@ export async function signUp(
       parallelism: 1,
     });
 
-    //generate an id for new user
     const userId = generateIdFromEntropySize(10);
 
-    //check the user with this username or email exists or not
     const existingUsername = await prisma.user.findFirst({
       where: {
         username: {
@@ -37,7 +35,7 @@ export async function signUp(
 
     if (existingUsername) {
       return {
-        error: "username already taken",
+        error: "Username already taken",
       };
     }
 
@@ -52,24 +50,29 @@ export async function signUp(
 
     if (existingEmail) {
       return {
-        error: "email already taken",
+        error: "Email already taken",
       };
     }
 
-    //after check the existing,create a new user in db
-    await prisma.user.create({
-      data: {
+    await prisma.$transaction(async (tx) => {
+      await tx.user.create({
+        data: {
+          id: userId,
+          username,
+          displayName: username,
+          email,
+          passwordHash,
+        },
+      });
+      await streamServerClient.upsertUser({
         id: userId,
-        username: username,
-        displayName: username,
-        passwordHash,
-        email,
-      },
+        username,
+        name: username,
+      });
     });
 
     const session = await lucia.createSession(userId, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
-
     (await cookies()).set(
       sessionCookie.name,
       sessionCookie.value,
@@ -89,7 +92,7 @@ export async function signUp(
     }
     console.error(error);
     return {
-      error: "Something went wrong!",
+      error: "Something went wrong. Please try again.",
     };
   }
 }
