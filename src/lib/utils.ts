@@ -50,3 +50,49 @@ export function isUploadThingUrl(url: string | null | undefined): boolean {
     return false;
   }
 }
+
+/**
+ * Convert old UploadThing URL format (/a/) to new format (/f/)
+ * Old format: https://{appId}.ufs.sh/a/{appId}/{fileKey}
+ * New format: https://utfs.io/f/{fileKey}
+ * @param url - The URL to convert
+ * @returns The converted URL, or original URL if not an old UploadThing URL
+ */
+export function convertUploadThingUrl(
+  url: string | null | undefined,
+): string | null | undefined {
+  if (!url) return url;
+
+  try {
+    const urlObj = new URL(url);
+
+    // Check if it's an old format URL (ends with .ufs.sh and has /a/ in path)
+    if (
+      urlObj.hostname.endsWith(".ufs.sh") &&
+      urlObj.pathname.includes("/a/")
+    ) {
+      // Extract the file key from the old format
+      // Path format: /a/{appId}/{fileKey}
+      const pathParts = urlObj.pathname
+        .split("/")
+        .filter((part) => part !== "");
+
+      // Find the index of "a"
+      const aIndex = pathParts.indexOf("a");
+
+      if (aIndex !== -1 && pathParts.length > aIndex + 2) {
+        // Get everything after /a/{appId}/ as the file key
+        // Skip "a" (index) and appId (index+1), take rest
+        const fileKey = pathParts.slice(aIndex + 2).join("/");
+        // Convert to new format
+        return `https://utfs.io/f/${fileKey}`;
+      }
+    }
+
+    // If already in new format or not an UploadThing URL, return as is
+    return url;
+  } catch {
+    // If URL parsing fails, return original
+    return url;
+  }
+}

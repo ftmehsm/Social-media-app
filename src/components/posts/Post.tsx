@@ -2,7 +2,12 @@
 
 import { useSession } from "@/contexts/SessionProvider";
 import { PostData } from "@/lib/types";
-import { cn, formatRelativeDate, isUploadThingUrl } from "@/lib/utils";
+import {
+  cn,
+  formatRelativeDate,
+  isUploadThingUrl,
+  convertUploadThingUrl,
+} from "@/lib/utils";
 import { Media } from "@prisma/client";
 import { MessageSquare } from "lucide-react";
 import Image from "next/image";
@@ -124,11 +129,14 @@ function MediaPreview({ media }: MediaPreviewProps) {
   const t = useTranslations("posts");
 
   if (media.type === "IMAGE") {
+    // Convert old UploadThing URLs to new format
+    const imageUrl = convertUploadThingUrl(media.url) || media.url;
+
     // Use regular img tag for UploadThing URLs to avoid Next.js Image Optimization
-    if (isUploadThingUrl(media.url)) {
+    if (isUploadThingUrl(imageUrl)) {
       return (
         <img
-          src={media.url}
+          src={imageUrl}
           alt={t("attachment")}
           className="mx-auto size-fit max-h-[30rem] rounded-2xl"
         />
@@ -137,7 +145,7 @@ function MediaPreview({ media }: MediaPreviewProps) {
 
     return (
       <Image
-        src={media.url}
+        src={imageUrl}
         alt={t("attachment")}
         width={500}
         height={500}
@@ -147,10 +155,13 @@ function MediaPreview({ media }: MediaPreviewProps) {
   }
 
   if (media.type === "VIDEO") {
+    // Convert old UploadThing URLs to new format
+    const videoUrl = convertUploadThingUrl(media.url) || media.url;
+
     return (
       <div>
         <video
-          src={media.url}
+          src={videoUrl}
           controls
           className="mx-auto size-fit max-h-[30rem] rounded-2xl"
         />
