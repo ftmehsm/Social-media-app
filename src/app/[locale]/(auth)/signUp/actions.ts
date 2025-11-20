@@ -11,7 +11,7 @@ import { redirect } from "next/navigation";
 
 export async function signUp(
   credentials: SignUpValues,
-): Promise<{ error: string }> {
+): Promise<{ error?: string }> {
   try {
     const { username, email, password } = signUpSchema.parse(credentials);
 
@@ -79,9 +79,11 @@ export async function signUp(
       sessionCookie.attributes,
     );
 
-    return redirect("/");
+    // Return success instead of redirecting
+    // Client will handle the redirect
+    return {};
   } catch (error) {
-    // Re-throw redirect errors
+    // Re-throw redirect errors - these are expected and should not be caught
     if (
       error &&
       typeof error === "object" &&

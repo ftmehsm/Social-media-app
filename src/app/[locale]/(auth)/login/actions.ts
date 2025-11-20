@@ -11,7 +11,7 @@ import { generateIdFromEntropySize } from "lucia";
 
 export async function login(
   credentials: LoginValues,
-): Promise<{ error: string }> {
+): Promise<{ error?: string }> {
   try {
     const { username, password } = loginSchema.parse(credentials);
 
@@ -52,9 +52,11 @@ export async function login(
       sessionCookie.attributes,
     );
 
-    return redirect("/");
+    // Return success instead of redirecting
+    // Client will handle the redirect
+    return {};
   } catch (error) {
-    // Re-throw redirect errors
+    // Re-throw redirect errors - these are expected and should not be caught
     if (
       error &&
       typeof error === "object" &&
@@ -184,7 +186,9 @@ export async function loginWithGoogle(
       sessionCookie.attributes,
     );
 
-    return redirect("/");
+    // Return success instead of redirecting
+    // Client will handle the redirect
+    return {};
   } catch (error) {
     // Re-throw redirect errors
     if (

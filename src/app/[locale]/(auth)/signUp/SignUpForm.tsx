@@ -17,6 +17,7 @@ import { signUp } from "./actions";
 import { PasswordInput } from "@/components/PasswordInput";
 import LoadingButton from "@/components/LoadingButton";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 /**
  * Sign Up Form Component
@@ -27,6 +28,7 @@ import { useTranslations } from "next-intl";
 export default function SignUpForm() {
   const [error, setError] = useState<string>();
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   const t = useTranslations("auth.signUp");
 
   const form = useForm<SignUpValues>({
@@ -41,8 +43,29 @@ export default function SignUpForm() {
   async function onSubmit(values: SignUpValues) {
     setError(undefined);
     startTransition(async () => {
-      const { error } = await signUp(values);
-      if (error) setError(error);
+      try {
+        const result = await signUp(values);
+        if (result?.error) {
+          setError(result.error);
+        } else {
+          // No error means success - redirect on client side
+          router.push("/");
+          router.refresh();
+        }
+      } catch (error) {
+        // Check if it's a redirect error
+        if (
+          error &&
+          typeof error === "object" &&
+          "digest" in error &&
+          error.digest === "NEXT_REDIRECT"
+        ) {
+          // Redirect is happening, don't set error
+          return;
+        }
+        // Only set error for unexpected errors
+        setError(t("errors.signUpFailed"));
+      }
     });
   }
 
