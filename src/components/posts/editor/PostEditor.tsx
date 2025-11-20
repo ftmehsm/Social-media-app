@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "@/app/(main)/SessionProvider";
+import { useSession } from "@/contexts/SessionProvider";
 import LoadingButton from "@/components/LoadingButton";
 import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/UserAvatar";
@@ -15,9 +15,11 @@ import { ClipboardEvent, useRef } from "react";
 import { useSubmitPostMutation } from "./mutations";
 import "./styles.css";
 import useMediaUpload, { Attachment } from "./useMediaUpload";
+import { useTranslations } from "next-intl";
 
 export default function PostEditor() {
   const { user } = useSession();
+  const t = useTranslations("posts");
 
   const mutation = useSubmitPostMutation();
 
@@ -43,7 +45,7 @@ export default function PostEditor() {
         italic: false,
       }),
       Placeholder.configure({
-        placeholder: "What's crack-a-lackin'?",
+        placeholder: t("writePost"),
       }),
     ],
   });
@@ -114,7 +116,7 @@ export default function PostEditor() {
           disabled={!input.trim() || isUploading}
           className="min-w-20"
         >
-          Post
+          {mutation.isPending ? t("posting") : t("post")}
         </LoadingButton>
       </div>
     </div>

@@ -1,3 +1,9 @@
+import createNextIntlPlugin from 'next-intl/plugin';
+
+// Configure next-intl plugin
+// The plugin will automatically use the routing configuration
+const withNextIntl = createNextIntlPlugin();
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
@@ -51,10 +57,15 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "*.ufs.sh",  // Add this for UploadThing's ufs.sh domain
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "lh3.googleusercontent.com",
       },
     ],
   },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

@@ -9,6 +9,7 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { MoreHorizontal, Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface PostMoreButtonProps {
   post: PostData;
@@ -20,6 +21,7 @@ export default function PostMoreButton({
   className,
 }: PostMoreButtonProps) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const t = useTranslations("common");
 
   return (
     <>
@@ -33,7 +35,7 @@ export default function PostMoreButton({
           <DropdownMenuItem onClick={() => setShowDeleteDialog(true)}>
             <span className="flex items-center gap-3 text-destructive">
               <Trash2 className="size-4" />
-              Delete
+              {t("delete")}
             </span>
           </DropdownMenuItem>
         </DropdownMenuContent>

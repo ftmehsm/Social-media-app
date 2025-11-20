@@ -10,6 +10,7 @@ import {
 import { useDeletePostMutation } from "./mutations";
 import LoadingButton from "../LoadingButton";
 import { Button } from "../ui/button";
+import { useTranslations } from "next-intl";
 
 interface DeletePostDialogProps {
   post: PostData;
@@ -24,6 +25,8 @@ export function DeletePostDialog({
   onClose,
 }: DeletePostDialogProps) {
   const mutation = useDeletePostMutation();
+  const t = useTranslations("posts");
+  const tCommon = useTranslations("common");
 
   function handleOpenChange(open: boolean) {
     if (!open || !mutation.isPending) {
@@ -35,10 +38,9 @@ export function DeletePostDialog({
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete Post?</DialogTitle>
+            <DialogTitle>{t("deletePost")}</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete this post? This action cannot be
-              undone.
+              {t("deletePostConfirm")}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -47,9 +49,11 @@ export function DeletePostDialog({
               loading={mutation.isPending}
               onClick={() => mutation.mutate(post.id, { onSuccess: onClose })}
             >
-              Delete
+              {tCommon("delete")}
             </LoadingButton>
-            <Button variant="outline" onClick={onClose} disabled={mutation.isPending}>Cancel</Button>
+            <Button variant="outline" onClick={onClose} disabled={mutation.isPending}>
+              {tCommon("cancel")}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

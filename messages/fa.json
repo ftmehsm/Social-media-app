@@ -1,0 +1,144 @@
+{
+  "common": {
+    "appName": "لیورا",
+    "search": "جستجو",
+    "home": "خانه",
+    "bookmarks": "نشان‌گذاری‌ها",
+    "notifications": "اعلان‌ها",
+    "messages": "پیام‌ها",
+    "loading": "در حال بارگذاری...",
+    "error": "خطا",
+    "save": "ذخیره",
+    "cancel": "لغو",
+    "delete": "حذف",
+    "edit": "ویرایش",
+    "close": "بستن",
+    "submit": "ارسال",
+    "back": "بازگشت",
+    "next": "بعدی",
+    "previous": "قبلی",
+    "confirm": "تأیید",
+    "yes": "بله",
+    "no": "خیر",
+    "whoToFollow": "دنبال کردن",
+    "trendingTopics": "موضوعات داغ",
+    "post": "پست",
+    "posts": "پست‌ها",
+    "youDontHaveAnyNotificationsYet": "شما هنوز هیچ اعلانی ندارید.",
+    "anErrorOccurredWhileLoadingNotifications": "خطا در بارگذاری اعلان‌ها.",
+    "youDontHaveAnyBookmarksYet": "شما هنوز هیچ نشان‌گذاری ندارید.",
+    "anErrorOccurredWhileLoadingBookmarks": "خطا در بارگذاری نشان‌گذاری‌ها."
+  },
+  "auth": {
+    "login": {
+      "title": "ورود",
+      "username": "نام کاربری",
+      "password": "رمز عبور",
+      "usernamePlaceholder": "نام کاربری",
+      "passwordPlaceholder": "رمز عبور",
+      "submit": "ورود",
+      "orContinueWith": "یا ادامه با",
+      "signInWithGoogle": "ورود با گوگل",
+      "errors": {
+        "invalidCredentials": "نام کاربری یا رمز عبور نامعتبر است",
+        "googleLoginFailed": "ورود با گوگل ناموفق بود. لطفاً دوباره تلاش کنید."
+      }
+    },
+    "signUp": {
+      "title": "ایجاد حساب کاربری",
+      "username": "نام کاربری",
+      "email": "ایمیل",
+      "password": "رمز عبور",
+      "usernamePlaceholder": "نام کاربری",
+      "emailPlaceholder": "ایمیل",
+      "passwordPlaceholder": "رمز عبور",
+      "submit": "ایجاد حساب کاربری",
+      "errors": {
+        "usernameTaken": "این نام کاربری قبلاً استفاده شده است",
+        "emailTaken": "این ایمیل قبلاً ثبت شده است",
+        "invalidData": "اطلاعات نامعتبر است"
+      }
+    }
+  },
+  "posts": {
+    "forYou": "برای شما",
+    "following": "دنبال‌شده",
+    "comments": "نظر",
+    "comment": "نظر",
+    "like": "پسندیدن",
+    "unlike": "حذف پسند",
+    "bookmark": "نشان‌گذاری",
+    "unbookmark": "حذف نشان‌گذاری",
+    "deletePost": "حذف پست",
+    "deletePostConfirm": "آیا مطمئن هستید که می‌خواهید این پست را حذف کنید؟",
+    "unsupportedMediaType": "نوع رسانه پشتیبانی نمی‌شود",
+    "attachment": "پیوست",
+    "writePost": "به چه چیزی فکر می‌کنید؟",
+    "post": "پست",
+    "posting": "در حال ارسال...",
+    "addComment": "نظر اضافه کنید...",
+    "commentPlaceholder": "نظر بنویسید...",
+    "deleteComment": "حذف نظر",
+    "deleteCommentConfirm": "آیا مطمئن هستید که می‌خواهید این نظر را حذف کنید؟"
+  },
+  "user": {
+    "follow": "دنبال کردن",
+    "unfollow": "لغو دنبال کردن",
+    "followers": "دنبال‌کننده",
+    "following": "دنبال‌شده",
+    "posts": "پست‌ها",
+    "postsLabel": "پست‌ها:",
+    "editProfile": "ویرایش پروفایل",
+    "logout": "خروج",
+    "settings": "تنظیمات",
+    "loggedInAs": "وارد شده به عنوان",
+    "profile": "پروفایل",
+    "lightMode": "حالت روشن",
+    "darkMode": "حالت تاریک",
+    "memberSince": "عضو از",
+    "avatar": "تصویر آواتار",
+    "username": "نام کاربری",
+    "displayName": "نام نمایشی",
+    "bio": "بیوگرافی",
+    "bioPlaceholder": "بیشتر بدانید در مورد خود",
+    "save": "ذخیره",
+    "userPosts": "پست‌های {name}",
+    "noPostsYet": "هنوز پستی وجود ندارد.",
+    "errorFetchingPosts": "خطا در بارگذاری پست‌ها."
+  },
+  "search": {
+    "title": "جستجو",
+    "placeholder": "جستجو",
+    "noResults": "نتیجه‌ای یافت نشد",
+    "results": "نتایج"
+  },
+  "notifications": {
+    "title": "اعلان‌ها",
+    "noNotifications": "اعلانی وجود ندارد",
+    "markAsRead": "علامت‌گذاری به عنوان خوانده شده",
+    "markAllAsRead": "علامت‌گذاری همه به عنوان خوانده شده"
+  },
+  "messages": {
+    "title": "پیام‌ها",
+    "newChat": "چت جدید",
+    "noChats": "هنوز چتی وجود ندارد",
+    "typeMessage": "پیام بنویسید...",
+    "send": "ارسال"
+  },
+  "hashtag": {
+    "title": "هشتگ",
+    "posts": "پست‌ها"
+  },
+  "errors": {
+    "notFound": "صفحه یافت نشد",
+    "somethingWentWrong": "مشکلی پیش آمد",
+    "tryAgain": "لطفاً دوباره تلاش کنید",
+    "notAuthorized": "شما مجاز به مشاهده این صفحه نیستید."
+  },
+  "language": {
+    "switch": "تغییر زبان",
+    "english": "انگلیسی",
+    "persian": "فارسی"
+  }
+}
+

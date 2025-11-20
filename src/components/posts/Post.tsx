@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "@/app/(main)/SessionProvider";
+import { useSession } from "@/contexts/SessionProvider";
 import { PostData } from "@/lib/types";
 import { cn, formatRelativeDate } from "@/lib/utils";
 import { Media } from "@prisma/client";
@@ -15,6 +15,8 @@ import UserTooltip from "../UserTooltip";
 import BookmarkButton from "./BookmarkButton";
 import LikeButton from "./LikeButton";
 import PostMoreButton from "./PostMoreButton";
+import { useTranslations, useLocale } from "next-intl";
+import { type Locale } from "@/i18n/config";
 
 interface PostProps {
   post: PostData;
@@ -22,6 +24,7 @@ interface PostProps {
 
 export default function Post({ post }: PostProps) {
   const { user } = useSession();
+  const locale = useLocale() as Locale;
 
   const [showComments, setShowComments] = useState(false);
 
@@ -48,7 +51,7 @@ export default function Post({ post }: PostProps) {
               className="block text-sm text-muted-foreground hover:underline"
               suppressHydrationWarning
             >
-              {formatRelativeDate(post.createdAt)}
+              {formatRelativeDate(post.createdAt, locale)}
             </Link>
           </div>
         </div>
@@ -118,11 +121,13 @@ interface MediaPreviewProps {
 }
 
 function MediaPreview({ media }: MediaPreviewProps) {
+  const t = useTranslations("posts");
+
   if (media.type === "IMAGE") {
     return (
       <Image
         src={media.url}
-        alt="Attachment"
+        alt={t("attachment")}
         width={500}
         height={500}
         className="mx-auto size-fit max-h-[30rem] rounded-2xl"
@@ -142,7 +147,7 @@ function MediaPreview({ media }: MediaPreviewProps) {
     );
   }
 
-  return <p className="text-destructive">Unsupported media type</p>;
+  return <p className="text-destructive">{t("unsupportedMediaType")}</p>;
 }
 
 interface CommentButtonProps {
@@ -151,12 +156,15 @@ interface CommentButtonProps {
 }
 
 function CommentButton({ post, onClick }: CommentButtonProps) {
+  const t = useTranslations("posts");
+  const commentText = post._count.comments === 1 ? t("comment") : t("comments");
+
   return (
     <button onClick={onClick} className="flex items-center gap-2">
       <MessageSquare className="size-5" />
       <span className="text-sm font-medium tabular-nums">
         {post._count.comments}{" "}
-        <span className="hidden sm:inline">comments</span>
+        <span className="hidden sm:inline">{commentText}</span>
       </span>
     </button>
   );

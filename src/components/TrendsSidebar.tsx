@@ -9,6 +9,7 @@ import { formatNumber } from "@/lib/utils";
 import FollowButton from "./FollowButton";
 import { getUserDataSelect } from "@/lib/types";
 import UserTooltip from "./UserTooltip";
+import { getTranslations } from "next-intl/server";
 
 export default function TrendsSidebar() {
   return (
@@ -23,7 +24,7 @@ export default function TrendsSidebar() {
 
 async function WhoToFollow() {
   const { user } = await validateRequest();
-
+  const t = await getTranslations("common");
   if (!user) return null;
 
   const usersToFollow = await prisma.user.findMany({
@@ -43,7 +44,7 @@ async function WhoToFollow() {
 
   return (
     <div className="space-y-5 rounded-2xl bg-card p-5 shadow-sm">
-      <div className="text-xl font-bold">who to follow</div>
+      <div className="text-xl font-bold">{t("whoToFollow")}</div>
       {usersToFollow.map((user) => (
         <div key={user.id} className="flex items-center justify-between gap-3">
           <UserTooltip user={user}>
@@ -57,7 +58,9 @@ async function WhoToFollow() {
                   {user.displayName}
                 </p>
                 <p className="line-clamp-1 break-all text-muted-foreground">
-                  @{user.username}
+                  <span className="username" dir="ltr">
+                    @{user.username}
+                  </span>
                 </p>
               </div>
             </Link>
@@ -98,9 +101,10 @@ const getTrendingTopics = unstable_cache(
 
 async function TrendingTopics() {
   const trendingTopics = await getTrendingTopics();
+  const t = await getTranslations("common");
   return (
     <div className="space-y-5 rounded-2xl bg-card p-5 shadow-sm">
-      <div className="text-xl font-bold">Trending topics</div>
+      <div className="text-xl font-bold">{t("trendingTopics")}</div>
       {trendingTopics.map(({ hashtag, count }) => {
         const title = hashtag.split("#")[1];
 
@@ -113,7 +117,7 @@ async function TrendingTopics() {
               {hashtag}
             </p>
             <p className="text-sm text-muted-foreground">
-              {formatNumber(count)} {count === 1 ? "post" : "posts"}
+              {formatNumber(count)} {count === 1 ? t("post") : t("posts")}
             </p>
           </Link>
         );
