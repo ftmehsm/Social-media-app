@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useSubmitCommentMutation } from "./mutations";
+import { useTranslations } from "next-intl";
 
 interface CommentInputProps {
   post: PostData;
@@ -11,6 +12,7 @@ interface CommentInputProps {
 
 export default function CommentInput({ post }: CommentInputProps) {
   const [input, setInput] = useState("");
+  const t = useTranslations("posts");
 
   const mutation = useSubmitCommentMutation(post.id);
 
@@ -33,7 +35,7 @@ export default function CommentInput({ post }: CommentInputProps) {
   return (
     <form className="flex w-full items-center gap-2" onSubmit={onSubmit}>
       <Input
-        placeholder="Write a comment..."
+        placeholder={t("commentPlaceholder")}
         value={input}
         onChange={(e) => setInput(e.target.value)}
         autoFocus

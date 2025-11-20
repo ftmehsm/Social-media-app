@@ -3,6 +3,7 @@
 import { useFollowerInfo } from "@/hooks/useFollowerInfo";
 import { FollowerInfo } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 export interface FollowerCountProps {
   userId: string;
@@ -14,10 +15,10 @@ export default function FollowerCount({
   initialState,
 }: FollowerCountProps) {
   const { data } = useFollowerInfo(userId, initialState);
-
+  const t = useTranslations("user");
   return (
     <span>
-      Followers:{" "}
+      {t("followers")}:{" "}
       <span className="font-semibold">{formatNumber(data.followers)}</span>
     </span>
   );

@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-query";
 import { Heart } from "lucide-react";
 import { useToast } from "../ui/use-toast";
+import { useTranslations } from "next-intl";
 
 interface LikeButtonProps {
   postId: string;
@@ -17,6 +18,9 @@ interface LikeButtonProps {
 
 export default function LikeButton({ postId, initialState }: LikeButtonProps) {
   const { toast } = useToast();
+  const t = useTranslations();
+  const tPosts = useTranslations("posts");
+  const tErrors = useTranslations("errors");
 
   const queryClient = useQueryClient();
 
@@ -53,10 +57,12 @@ export default function LikeButton({ postId, initialState }: LikeButtonProps) {
       console.error(error);
       toast({
         variant: "destructive",
-        description: "Something went wrong. Please try again.",
+        description: tErrors("somethingWentWrong"),
       });
     },
   });
+
+  const likeText = tPosts("like");
 
   return (
     <button onClick={() => mutate()} className="flex items-center gap-2">
@@ -67,7 +73,7 @@ export default function LikeButton({ postId, initialState }: LikeButtonProps) {
         )}
       />
       <span className="text-sm font-medium tabular-nums">
-        {data.likes} <span className="hidden sm:inline">likes</span>
+        {data.likes} <span className="hidden sm:inline">{likeText}</span>
       </span>
     </button>
   );

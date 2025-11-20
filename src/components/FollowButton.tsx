@@ -6,6 +6,7 @@ import { useToast } from "./ui/use-toast";
 import { useMutation, useQueryClient, QueryKey } from "@tanstack/react-query";
 import { Button } from "./ui/button";
 import kyInstance from "@/lib/ky";
+import { useTranslations } from "next-intl";
 
 interface FollowButtonProps {
   userId: string;
@@ -17,6 +18,8 @@ export default function FollowButton({
   initialState,
 }: FollowButtonProps) {
   const { toast } = useToast();
+  const t = useTranslations("user");
+  const tErrors = useTranslations("errors");
 
   const queryClient = useQueryClient();
   const { data } = useFollowerInfo(userId, initialState);
@@ -45,7 +48,7 @@ export default function FollowButton({
       queryClient.setQueryData(queryKey, context?.previousState);
       console.error(error);
       toast({
-        description: "Failed to follow user",
+        description: tErrors("somethingWentWrong"),
         variant: "destructive",
       });
     },
@@ -60,7 +63,7 @@ export default function FollowButton({
       variant={data.isFollowedByUser ? "secondary" : "default"}
       onClick={() => mutate()}
     >
-      {data.isFollowedByUser ? "Unfollow" : "Follow"}
+      {data.isFollowedByUser ? t("unfollow") : t("follow")}
     </Button>
   );
 }

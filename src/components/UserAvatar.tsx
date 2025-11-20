@@ -1,6 +1,6 @@
 import Image from "next/image";
 import AvatarPlaceholder from "@/assets/avatar-placeholder.png";
-import { cn } from "@/lib/utils";
+import { cn, isUploadThingUrl, convertUploadThingUrl } from "@/lib/utils";
 
 interface UserAvatarProps {
   avatarUrl: string | null | undefined;
@@ -13,12 +13,37 @@ export default function UserAvatar({
   size,
   className,
 }: UserAvatarProps) {
+  const imageSize = size ?? 48;
+  const rawSrc = avatarUrl || AvatarPlaceholder;
+  // Convert old UploadThing URLs to new format
+  const src =
+    typeof rawSrc === "string"
+      ? convertUploadThingUrl(rawSrc) || rawSrc
+      : rawSrc;
+  const isUploadThing = typeof src === "string" && isUploadThingUrl(src);
+
+  // Use regular img tag for UploadThing URLs to avoid Next.js Image Optimization
+  if (isUploadThing) {
+    return (
+      <img
+        src={src}
+        alt="User Avatar"
+        width={imageSize}
+        height={imageSize}
+        className={cn(
+          "aspect-square h-fit flex-none rounded-full bg-secondary object-cover",
+          className,
+        )}
+      />
+    );
+  }
+
   return (
     <Image
-      src={avatarUrl || AvatarPlaceholder}
+      src={src}
       alt="User Avatar"
-      width={size ?? 48}
-      height={size ?? 48}
+      width={imageSize}
+      height={imageSize}
       className={cn(
         "aspect-square h-fit flex-none rounded-full bg-secondary object-cover",
         className,

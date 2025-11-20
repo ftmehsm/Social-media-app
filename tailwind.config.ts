@@ -10,6 +10,9 @@ const config = {
     "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
+  // Enable RTL support
+  // Tailwind CSS v3.4+ has built-in RTL support via logical properties
+  // We'll use the dir attribute on html element to control direction
   theme: {
     container: {
       center: true,

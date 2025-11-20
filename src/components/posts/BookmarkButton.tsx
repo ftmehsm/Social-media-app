@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-query";
 import { Bookmark } from "lucide-react";
 import { useToast } from "../ui/use-toast";
+import { useTranslations } from "next-intl";
 
 interface BookmarkButtonProps {
   postId: string;
@@ -20,6 +21,8 @@ export default function BookmarkButton({
   initialState,
 }: BookmarkButtonProps) {
   const { toast } = useToast();
+  const tPosts = useTranslations("posts");
+  const tErrors = useTranslations("errors");
 
   const queryClient = useQueryClient();
 
@@ -40,7 +43,9 @@ export default function BookmarkButton({
         : kyInstance.post(`/api/posts/${postId}/bookmark`),
     onMutate: async () => {
       toast({
-        description: `Post ${data.isBookmarkedByUser ? "un" : ""}bookmarked`,
+        description: data.isBookmarkedByUser
+          ? tPosts("unbookmark")
+          : tPosts("bookmark"),
       });
 
       await queryClient.cancelQueries({ queryKey });
@@ -58,7 +63,7 @@ export default function BookmarkButton({
       console.error(error);
       toast({
         variant: "destructive",
-        description: "Something went wrong. Please try again.",
+        description: tErrors("somethingWentWrong"),
       });
     },
   });

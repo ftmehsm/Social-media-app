@@ -1,0 +1,144 @@
+{
+  "common": {
+    "appName": "Liora",
+    "search": "Search",
+    "home": "Home",
+    "bookmarks": "Bookmarks",
+    "notifications": "Notifications",
+    "messages": "Messages",
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "whoToFollow": "Who to follow",
+    "trendingTopics": "Trending Topics",
+    "post": "post",
+    "posts": "posts",
+    "youDontHaveAnyNotificationsYet": "You don't have any notifications yet.",
+    "anErrorOccurredWhileLoadingNotifications": "An error occurred while loading notifications.",
+    "youDontHaveAnyBookmarksYet": "You don't have any bookmarks yet.",
+    "anErrorOccurredWhileLoadingBookmarks": "An error occurred while loading bookmarks."
+  },
+  "auth": {
+    "login": {
+      "title": "Log in",
+      "username": "username",
+      "password": "Password",
+      "usernamePlaceholder": "username",
+      "passwordPlaceholder": "password",
+      "submit": "Log in",
+      "orContinueWith": "Or continue with",
+      "signInWithGoogle": "Sign in with Google",
+      "errors": {
+        "invalidCredentials": "Invalid username or password",
+        "googleLoginFailed": "Failed to sign in with Google. Please try again."
+      }
+    },
+    "signUp": {
+      "title": "Create account",
+      "username": "username",
+      "email": "Email",
+      "password": "Password",
+      "usernamePlaceholder": "username",
+      "emailPlaceholder": "email",
+      "passwordPlaceholder": "password",
+      "submit": "Create account",
+      "errors": {
+        "usernameTaken": "Username is already taken",
+        "emailTaken": "Email is already registered",
+        "invalidData": "Invalid data provided"
+      }
+    }
+  },
+  "posts": {
+    "forYou": "For You",
+    "following": "Following",
+    "comments": "comments",
+    "comment": "comment",
+    "like": "Like",
+    "unlike": "Unlike",
+    "bookmark": "Bookmark",
+    "unbookmark": "Unbookmark",
+    "deletePost": "Delete Post",
+    "deletePostConfirm": "Are you sure you want to delete this post?",
+    "unsupportedMediaType": "Unsupported media type",
+    "attachment": "Attachment",
+    "writePost": "What's on your mind?",
+    "post": "Post",
+    "posting": "Posting...",
+    "addComment": "Add a comment...",
+    "commentPlaceholder": "Write a comment...",
+    "deleteComment": "Delete Comment",
+    "deleteCommentConfirm": "Are you sure you want to delete this comment?"
+  },
+  "user": {
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "followers": "Followers",
+    "following": "Following",
+    "posts": "Posts",
+    "postsLabel": "Posts:",
+    "editProfile": "Edit Profile",
+    "logout": "Log out",
+    "settings": "Settings",
+    "loggedInAs": "Logged in as",
+    "profile": "Profile",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode",
+    "memberSince": "Member since",
+    "avatar": "Avatar",
+    "username": "Username",
+    "displayName": "Display name",
+    "bio": "Bio",
+    "bioPlaceholder": "Tell us a little bit about yourself",
+    "save": "Save",
+    "userPosts": "{name}'s posts",
+    "noPostsYet": "No posts yet.",
+    "errorFetchingPosts": "Error fetching posts."
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search",
+    "noResults": "No results found",
+    "results": "Results"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "noNotifications": "No notifications",
+    "markAsRead": "Mark as read",
+    "markAllAsRead": "Mark all as read"
+  },
+  "messages": {
+    "title": "Messages",
+    "newChat": "New Chat",
+    "noChats": "No chats yet",
+    "typeMessage": "Type a message...",
+    "send": "Send"
+  },
+  "hashtag": {
+    "title": "Hashtag",
+    "posts": "Posts"
+  },
+  "errors": {
+    "notFound": "Page not found",
+    "somethingWentWrong": "Something went wrong",
+    "tryAgain": "Please try again",
+    "notAuthorized": "You're not authorized to view this page."
+  },
+  "language": {
+    "switch": "Switch Language",
+    "english": "English",
+    "persian": "Persian"
+  }
+}
+

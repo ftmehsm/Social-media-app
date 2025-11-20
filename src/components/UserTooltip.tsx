@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "@/app/(main)/SessionProvider";
+import { useSession } from "@/contexts/SessionProvider";
 import { FollowerInfo, UserData } from "@/lib/types";
 import Link from "next/link";
 import { PropsWithChildren } from "react";
@@ -48,7 +48,9 @@ export default function UserTooltip({ children, user }: UserTooltipProps) {
                 <div className="text-lg font-semibold hover:underline">
                   {user.displayName}
                 </div>
-                <div className="text-muted-foreground">@{user.username}</div>
+                <div className="text-muted-foreground">
+                  <span className="username" dir="ltr">@{user.username}</span>
+                </div>
               </Link>
             </div>
             {user.bio && (

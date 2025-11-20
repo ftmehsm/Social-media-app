@@ -36,6 +36,7 @@
     "lucia": "^3.2.0",
     "lucide-react": "^0.402.0",
     "next": "^15.0.0-rc.0",
+    "next-intl": "^4.5.5",
     "next-themes": "^0.3.0",
     "prisma": "^6.15.0",
     "react": "^18.3.1",

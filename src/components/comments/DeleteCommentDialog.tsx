@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { useDeleteCommentMutation } from "./mutations";
+import { useTranslations } from "next-intl";
 
 interface DeleteCommentDialogProps {
   comment: CommentData;
@@ -23,6 +24,8 @@ export default function DeleteCommentDialog({
   onClose,
 }: DeleteCommentDialogProps) {
   const mutation = useDeleteCommentMutation();
+  const t = useTranslations("posts");
+  const tCommon = useTranslations("common");
 
   function handleOpenChange(open: boolean) {
     if (!open || !mutation.isPending) {
@@ -34,10 +37,9 @@ export default function DeleteCommentDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete comment?</DialogTitle>
+          <DialogTitle>{t("deleteComment")}</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete this comment? This action cannot be
-            undone.
+            {t("deleteCommentConfirm")}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
@@ -46,14 +48,14 @@ export default function DeleteCommentDialog({
             onClick={() => mutation.mutate(comment.id, { onSuccess: onClose })}
             loading={mutation.isPending}
           >
-            Delete
+            {tCommon("delete")}
           </LoadingButton>
           <Button
             variant="outline"
             onClick={onClose}
             disabled={mutation.isPending}
           >
-            Cancel
+            {tCommon("cancel")}
           </Button>
         </DialogFooter>
       </DialogContent>

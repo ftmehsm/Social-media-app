@@ -3,6 +3,71 @@
 @tailwind utilities;
 @import "~stream-chat-react/dist/css/v2/index.css";
 
+@font-face {
+  font-family: "IRANSansX";
+  src:
+    url("/fonts/woff2/IRANSansX-Thin.woff2") format("woff2"),
+    url("/fonts/woff/IRANSansX-Thin.woff") format("woff");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IRANSansX";
+  src:
+    url("/fonts/woff2/IRANSansX-Light.woff2") format("woff2"),
+    url("/fonts/woff/IRANSansX-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IRANSansX";
+  src:
+    url("/fonts/woff2/IRANSansX-Regular.woff2") format("woff2"),
+    url("/fonts/woff/IRANSansX-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IRANSansX";
+  src:
+    url("/fonts/woff2/IRANSansX-Medium.woff2") format("woff2"),
+    url("/fonts/woff/IRANSansX-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IRANSansX";
+  src:
+    url("/fonts/woff2/IRANSansX-Bold.woff2") format("woff2"),
+    url("/fonts/woff/IRANSansX-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IRANSansX";
+  src:
+    url("/fonts/woff2/IRANSansX-Black.woff2") format("woff2"),
+    url("/fonts/woff/IRANSansX-Black.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+/* Persian/Farsi font configuration */
+/* Apply IRANSansX font when locale is Persian (fa) */
+html[lang="fa"],
+html[lang="fa-IR"],
+html[lang="fa"] body,
+html[lang="fa-IR"] body,
+html[lang="fa"] *,
+html[lang="fa-IR"] * {
+  font-family: "IRANSansX", "Tahoma", "Arial", sans-serif !important;
+}
+
 @layer base {
   :root {
     --background: 224, 5%, 95%;
@@ -73,6 +138,67 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  
+  /* RTL Support */
+  /* Ensure proper text alignment and direction for RTL languages */
+  [dir="rtl"] {
+    direction: rtl;
+    text-align: right;
+  }
+  
+  [dir="ltr"] {
+    direction: ltr;
+    text-align: left;
+  }
+  
+  /* Persian/Farsi typography improvements */
+  /* Use IRANSansX for Persian locale - this must come after the general RTL rule to override it */
+  html[lang="fa"][dir="rtl"] body,
+  html[lang="fa"][dir="rtl"],
+  html[lang="fa"][dir="rtl"] *,
+  html[lang="fa-IR"][dir="rtl"] body,
+  html[lang="fa-IR"][dir="rtl"],
+  html[lang="fa-IR"][dir="rtl"] * {
+    font-family: "IRANSansX", "Tahoma", "Arial", sans-serif !important;
+  }
+  
+  /* Better spacing for RTL */
+  [dir="rtl"] .space-x-3 > * + * {
+    margin-right: 0.75rem;
+    margin-left: 0;
+  }
+  
+  [dir="rtl"] .space-x-5 > * + * {
+    margin-right: 1.25rem;
+    margin-left: 0;
+  }
+  
+  /* Fix for flexbox gaps in RTL */
+  [dir="rtl"] .gap-3 {
+    gap: 0.75rem;
+  }
+  
+  [dir="rtl"] .gap-5 {
+    gap: 1.25rem;
+  }
+  
+  /* Ensure @ symbol stays on the left side of usernames in RTL */
+  /* Username class - forces LTR direction for usernames */
+  .username,
+  [class*="username"] {
+    direction: ltr;
+    text-align: left;
+    unicode-bidi: embed;
+    display: inline-block;
+  }
+  
+  /* In RTL context, ensure usernames (text containing @) display LTR */
+  [dir="rtl"] .username,
+  [dir="rtl"] [class*="username"] {
+    direction: ltr !important;
+    text-align: left !important;
+    unicode-bidi: embed;
   }
 }
 

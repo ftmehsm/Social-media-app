@@ -35,7 +35,7 @@ export default function UserLinkWithTooltip({
         href={`/users/${username}`}
         className="text-primary hover:underline"
       >
-        {children}
+        <span className="username" dir="ltr">{children}</span>
       </Link>
     );
   }
@@ -46,7 +46,7 @@ export default function UserLinkWithTooltip({
         href={`/users/${username}`}
         className="text-primary hover:underline"
       >
-        {children}
+        <span className="username" dir="ltr">{children}</span>
       </Link>
     </UserTooltip>
   );
