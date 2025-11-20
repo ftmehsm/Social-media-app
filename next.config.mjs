@@ -65,6 +65,9 @@ const nextConfig = {
         hostname: "lh3.googleusercontent.com",
       },
     ],
+    // Use custom loader to bypass optimization for UploadThing URLs
+    loader: "custom",
+    loaderFile: "src/lib/imageLoader.ts",
   },
 };
 
