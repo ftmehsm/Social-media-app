@@ -52,22 +52,14 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "utfs.io",  // UploadThing CDN
-        pathname: "/**",  // Allow all paths
-      },
-      {
-        protocol: "https",
-        hostname: "*.ufs.sh",  // UploadThing subdomains (for backward compatibility)
-        pathname: "/**",
+        hostname: "utfs.io",
+        pathname: `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/*`,
       },
       {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
       },
     ],
-    // Use custom loader to bypass optimization for UploadThing URLs
-    loader: "custom",
-    loaderFile: "src/lib/imageLoader.ts",
   },
 };
 
