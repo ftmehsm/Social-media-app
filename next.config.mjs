@@ -57,8 +57,8 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "*.ufs.sh",  // Add this for UploadThing's ufs.sh domain
-        pathname: "/**",
+        hostname: "*.ufs.sh",  // UploadThing's ufs.sh domain (wildcard for all subdomains)
+        pathname: "/**",  // Allow all paths on ufs.sh subdomains
       },
       {
         protocol: "https",
