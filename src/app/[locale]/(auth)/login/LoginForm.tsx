@@ -20,16 +20,18 @@ import { loginSchema, LoginValues } from "@/lib/validation";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "@/firebase";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 /**
  * Login Form Component
- * 
+ *
  * Handles user authentication with username/password and Google OAuth.
  * All text is internationalized.
  */
 export default function LoginForm() {
   const [error, setError] = useState<string>();
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   const t = useTranslations("auth.login");
 
   const form = useForm<LoginValues>({
@@ -43,8 +45,29 @@ export default function LoginForm() {
   async function onSubmit(values: LoginValues) {
     setError(undefined);
     startTransition(async () => {
-      const { error } = await login(values);
-      if (error) setError(error);
+      try {
+        const result = await login(values);
+        if (result?.error) {
+          setError(result.error);
+        } else {
+          // No error means success - redirect on client side
+          router.push("/");
+          router.refresh();
+        }
+      } catch (error) {
+        // Check if it's a redirect error
+        if (
+          error &&
+          typeof error === "object" &&
+          "digest" in error &&
+          error.digest === "NEXT_REDIRECT"
+        ) {
+          // Redirect is happening, don't set error
+          return;
+        }
+        // Only set error for unexpected errors
+        setError(t("errors.loginFailed"));
+      }
     });
   }
 
@@ -55,14 +78,35 @@ export default function LoginForm() {
       const user = result.user;
 
       startTransition(async () => {
-        const { error } = await loginWithGoogle(
-          await user.getIdToken(),
-          user.uid,
-          user.displayName || "User",
-          user.email,
-          user.photoURL,
-        );
-        if (error) setError(error);
+        try {
+          const result = await loginWithGoogle(
+            await user.getIdToken(),
+            user.uid,
+            user.displayName || "User",
+            user.email,
+            user.photoURL,
+          );
+          if (result?.error) {
+            setError(result.error);
+          } else {
+            // No error means success - redirect on client side
+            router.push("/");
+            router.refresh();
+          }
+        } catch (error) {
+          // Check if it's a redirect error
+          if (
+            error &&
+            typeof error === "object" &&
+            "digest" in error &&
+            error.digest === "NEXT_REDIRECT"
+          ) {
+            // Redirect is happening, don't set error
+            return;
+          }
+          // Only set error for unexpected errors
+          setError(t("errors.googleLoginFailed"));
+        }
       });
     } catch (error) {
       console.error("Google login error:", error);
@@ -95,7 +139,10 @@ export default function LoginForm() {
             <FormItem>
               <FormLabel>{t("password")}</FormLabel>
               <FormControl>
-                <PasswordInput placeholder={t("passwordPlaceholder")} {...field} />
+                <PasswordInput
+                  placeholder={t("passwordPlaceholder")}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
