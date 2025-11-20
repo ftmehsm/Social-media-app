@@ -24,16 +24,19 @@ export function useUpdateProfileMutation() {
     mutationFn: async ({
       values,
       avatar,
+      currentUsername,
     }: {
       values: UpdateUserProfileValues;
       avatar?: File;
+      currentUsername: string;
     }) => {
       return Promise.all([
         updateUserProfile(values),
         avatar && startAvatarUpload([avatar]),
+        Promise.resolve(currentUsername),
       ]);
     },
-    onSuccess: async ([updatedUser, uploadResult]) => {
+    onSuccess: async ([updatedUser, uploadResult, currentUsername]) => {
       const newAvatarUrl = uploadResult?.[0].serverData.avatarUrl;
 
       const queryFilter: QueryFilters = {
@@ -68,7 +71,12 @@ export function useUpdateProfileMutation() {
         },
       );
 
-      router.refresh();
+      // Redirect to new username if it changed
+      if (updatedUser.username !== currentUsername) {
+        router.push(`/users/${updatedUser.username}`);
+      } else {
+        router.refresh();
+      }
 
       toast({
         description: "Profile updated",
@@ -76,9 +84,11 @@ export function useUpdateProfileMutation() {
     },
     onError(error) {
       console.error(error);
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to update profile. Please try again.";
       toast({
         variant: "destructive",
-        description: "Failed to update profile. Please try again.",
+        description: errorMessage,
       });
     },
   });

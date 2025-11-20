@@ -16,6 +16,25 @@ export async function updateUserProfile(values: UpdateUserProfileValues) {
 
   if (!user) throw new Error("Unauthorized");
 
+  // Check if username is already taken by another user
+  if (validatedValues.username !== user.username) {
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        username: {
+          equals: validatedValues.username,
+          mode: "insensitive",
+        },
+        NOT: {
+          id: user.id,
+        },
+      },
+    });
+
+    if (existingUser) {
+      throw new Error("Username already taken");
+    }
+  }
+
   const updatedUser = await prisma.$transaction(async (tx) => {
     const updatedUser = await tx.user.update({
       where: { id: user.id },
@@ -25,6 +44,7 @@ export async function updateUserProfile(values: UpdateUserProfileValues) {
     await streamServerClient.partialUpdateUser({
       id: user.id,
       set: {
+        username: validatedValues.username,
         name: validatedValues.displayName,
       },
     });

@@ -46,6 +46,7 @@ export default function EditProfileDialog({
   const form = useForm<UpdateUserProfileValues>({
     resolver: zodResolver(updateUserProfileSchema),
     defaultValues: {
+      username: user.username,
       displayName: user.displayName,
       bio: user.bio || "",
     },
@@ -64,6 +65,7 @@ export default function EditProfileDialog({
       {
         values,
         avatar: newAvatarFile,
+        currentUsername: user.username,
       },
       {
         onSuccess: () => {
@@ -93,6 +95,19 @@ export default function EditProfileDialog({
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Your username" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="displayName"
