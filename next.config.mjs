@@ -58,7 +58,12 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "*.ufs.sh",  // UploadThing's ufs.sh domain (wildcard for all subdomains)
-        pathname: "/**",  // Allow all paths on ufs.sh subdomains
+        pathname: "/**",  // Allow all paths including /f/, /a/, etc.
+      },
+      {
+        protocol: "https",
+        hostname: "emzs09kvnf.ufs.sh",  // Specific subdomain for your UploadThing app
+        pathname: "/**",  // Allow all paths
       },
       {
         protocol: "https",
