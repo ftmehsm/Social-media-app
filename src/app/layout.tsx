@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     default: "Liora",
   },
   description: "The social media app for powernerds",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
