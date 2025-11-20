@@ -1,12 +1,12 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 import { formatDate, formatDistanceToNow } from "date-fns";
 import { faIR } from "date-fns/locale/fa-IR";
 import { enUS } from "date-fns/locale";
 import type { Locale as DateFnsLocale } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 /**
@@ -18,10 +18,10 @@ export function formatRelativeDate(from: Date, locale: "en" | "fa" = "en") {
   const currentDate = new Date();
   const dateLocale: DateFnsLocale = locale === "fa" ? faIR : enUS;
 
-  if(currentDate.getTime() - from.getTime() < 24*60*60*1000) {
+  if (currentDate.getTime() - from.getTime() < 24 * 60 * 60 * 1000) {
     return formatDistanceToNow(from, { addSuffix: true, locale: dateLocale });
-  } else{
-    if(currentDate.getFullYear() === from.getFullYear()) {
+  } else {
+    if (currentDate.getFullYear() === from.getFullYear()) {
       return formatDate(from, "MMM d", { locale: dateLocale });
     } else {
       return formatDate(from, "MMM d, yyyy", { locale: dateLocale });
@@ -29,7 +29,24 @@ export function formatRelativeDate(from: Date, locale: "en" | "fa" = "en") {
   }
 }
 
-
 export function formatNumber(n: number): string {
-  return Intl.NumberFormat("en-US" , { notation: "compact" , maximumFractionDigits: 1 }).format(n);
+  return Intl.NumberFormat("en-US", {
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(n);
+}
+
+/**
+ * Check if a URL is from UploadThing CDN (utfs.io)
+ * @param url - The URL to check
+ * @returns true if the URL is from UploadThing
+ */
+export function isUploadThingUrl(url: string | null | undefined): boolean {
+  if (!url) return false;
+  try {
+    const urlObj = new URL(url);
+    return urlObj.hostname === "utfs.io" || urlObj.hostname.endsWith(".ufs.sh");
+  } catch {
+    return false;
+  }
 }

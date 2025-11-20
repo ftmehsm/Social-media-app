@@ -2,7 +2,7 @@
 
 import { useSession } from "@/contexts/SessionProvider";
 import { PostData } from "@/lib/types";
-import { cn, formatRelativeDate } from "@/lib/utils";
+import { cn, formatRelativeDate, isUploadThingUrl } from "@/lib/utils";
 import { Media } from "@prisma/client";
 import { MessageSquare } from "lucide-react";
 import Image from "next/image";
@@ -124,6 +124,17 @@ function MediaPreview({ media }: MediaPreviewProps) {
   const t = useTranslations("posts");
 
   if (media.type === "IMAGE") {
+    // Use regular img tag for UploadThing URLs to avoid Next.js Image Optimization
+    if (isUploadThingUrl(media.url)) {
+      return (
+        <img
+          src={media.url}
+          alt={t("attachment")}
+          className="mx-auto size-fit max-h-[30rem] rounded-2xl"
+        />
+      );
+    }
+
     return (
       <Image
         src={media.url}

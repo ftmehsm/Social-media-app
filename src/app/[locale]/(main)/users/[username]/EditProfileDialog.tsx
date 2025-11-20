@@ -32,6 +32,7 @@ import { useForm } from "react-hook-form";
 import Resizer from "react-image-file-resizer";
 import { useUpdateProfileMutation } from "./mutations";
 import { useTranslations } from "next-intl";
+import { isUploadThingUrl } from "@/lib/utils";
 
 interface EditProfileDialogProps {
   user: UserData;
@@ -177,6 +178,10 @@ function AvatarInput({ src, onImageCropped }: AvatarInputProps) {
     );
   }
 
+  // Check if src is a string URL (UploadThing) or StaticImageData (placeholder)
+  const isUploadThing = typeof src === "string" && isUploadThingUrl(src);
+  const isBlobUrl = typeof src === "string" && src.startsWith("blob:");
+
   return (
     <>
       <input
@@ -191,13 +196,23 @@ function AvatarInput({ src, onImageCropped }: AvatarInputProps) {
         onClick={() => fileInputRef.current?.click()}
         className="group relative block"
       >
-        <Image
-          src={src}
-          alt="Avatar preview"
-          width={150}
-          height={150}
-          className="size-32 flex-none rounded-full object-cover"
-        />
+        {isUploadThing || isBlobUrl ? (
+          <img
+            src={src}
+            alt="Avatar preview"
+            width={150}
+            height={150}
+            className="size-32 flex-none rounded-full object-cover"
+          />
+        ) : (
+          <Image
+            src={src}
+            alt="Avatar preview"
+            width={150}
+            height={150}
+            className="size-32 flex-none rounded-full object-cover"
+          />
+        )}
         <span className="absolute inset-0 m-auto flex size-12 items-center justify-center rounded-full bg-black bg-opacity-30 text-white transition-colors duration-200 group-hover:bg-opacity-25">
           <Camera size={24} />
         </span>

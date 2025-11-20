@@ -52,8 +52,13 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "emzs09kvnf.ufs.sh",  // Specific subdomain for your UploadThing app
+        hostname: "utfs.io",  // UploadThing CDN
         pathname: "/**",  // Allow all paths
+      },
+      {
+        protocol: "https",
+        hostname: "*.ufs.sh",  // UploadThing subdomains (for backward compatibility)
+        pathname: "/**",
       },
       {
         protocol: "https",
